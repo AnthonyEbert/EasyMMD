@@ -12,12 +12,51 @@ MMD(x_obs, x_sim, x_obs_kmmd = NULL, a = NULL, rbf = kernlab::rbfdot(sigma
 
 \item{x_sim}{Numeric Vector}
 
-\item{x_obs_kmmd}{Precomputed first term in MMD calc}
+\item{x_obs_kmmd}{Precomputed first term in MMD calculation.}
 
-\item{a}{Termy term for the term}
+\item{a}{The squared norm of x_obs, see \link[kernlab]{kernelFast}}
 
-\item{rbf}{The radial basis function}
+\item{rbf}{The radial basis function, see \link[kernlab]{kernelMatrix}}
 }
 \description{
-Compute the MMD between two samples
+This function returns the estimator for the two-sample MMD.
+}
+\examples{
+x_obs <- rnorm(2500)
+x_sim <- rnorm(200)
+
+MMD_1 <- MMD(x_obs, x_sim)
+MMD_1
+
+# Precompute x_obs_kmmd for faster speed
+
+rbf = kernlab::rbfdot(sigma = 0.5)
+x_obs_kmmd <- sum(
+     kernlab::kernelMatrix(
+         rbf,as.matrix(x_obs),as.matrix(x_obs)
+     )
+)
+
+MMD_2 <- MMD(x_obs, x_sim, x_obs_kmmd)
+MMD_2
+
+# Precompute the squared norm of x_obs for more speed!
+
+a <- rowSums(as.matrix(x_obs)^2)
+
+MMD_3 <- MMD(x_obs, x_sim, x_obs_kmmd, a)
+MMD_3
+
+system.time(MMD_1 <- MMD(x_obs, x_sim))
+system.time(MMD_2 <- MMD(x_obs, x_sim, x_obs_kmmd))
+system.time(MMD_3 <- MMD(x_obs, x_sim, x_obs_kmmd, a))
+
+# Different radial basis function
+
+rbf = kernlab::rbfdot(sigma = 1)
+
+MMD_4 <- MMD(x_obs, x_sim, x_obs_kmmd, rbf = rbf)
+}
+\references{
+Gretton, Arthur, et al. "A kernel method for the two-sample-problem." Advances in neural information processing systems. 2007.
 }

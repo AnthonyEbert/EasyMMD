@@ -1,9 +1,9 @@
 Package: EasyMMD
-Title: Allows users to compute the MMD
-Version: 0.0.0.9000
+Title: Allows users to compute the Maximum Mean Discrepancy (MMD) between two samples
+Version: 0.0.1
 Authors@R: person("Anthony", "Ebert", email = "anthonyebert+CRAN@gmail.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-Depends: R (>= 3.4.0)
+Description: Provides a function similar to the kernlab::kmmd() function except it actually provides the MMD estimate as an output. 
+Depends: R (>= 3.3.3)
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
