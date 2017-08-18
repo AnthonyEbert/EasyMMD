@@ -49,8 +49,6 @@ MMD <- function(x_obs, x_sim, x_obs_kmmd = NULL, a = NULL, rbf = kernlab::rbfdot
 
   stopifnot(is.numeric(x_obs) | is.matrix(x_obs))
   stopifnot(is.numeric(x_sim) | is.matrix(x_sim))
-  stopifnot(length(x_obs_kmmd) == 1 & is.numeric(x_obs_kmmd))
-  stopifnot(length(a) == 1 & is.numeric(a))
   stopifnot(class(rbf) == "rbfkernel")
 
   x_obs <- as.matrix(x_obs)
@@ -70,6 +68,10 @@ MMD <- function(x_obs, x_sim, x_obs_kmmd = NULL, a = NULL, rbf = kernlab::rbfdot
     a <- rowSums(as.matrix(x_obs)^2)
 
   }
+
+  # Checks after these objects definitely exist
+  stopifnot(length(x_obs_kmmd) == 1 & is.numeric(x_obs_kmmd))
+  stopifnot(is.numeric(a))
 
   x_sim_kmmd <- sum(kernlab::kernelMatrix(rbf,as.matrix(x_sim),as.matrix(x_sim)))
 
