@@ -4,6 +4,7 @@
 #' @param x_obs Numeric Vector
 #' @param x_sim Numeric Vector
 #' @param sigma Numeric Kernel size
+#' @references Gretton, Arthur, et al. "A kernel two-sample test." Journal of Machine Learning Research 13.Mar (2012): 723-773.
 #' @examples
 #' x_obs <- rnorm(2000)
 #' x_sim <- rnorm(2000, 5)
