@@ -5,7 +5,7 @@
 \title{Compute the MMD between two samples}
 \usage{
 MMD(x_obs, x_sim, x_obs_kmmd = NULL, a = NULL, rbf = kernlab::rbfdot(sigma
-  = 0.5))
+  = 1))
 }
 \arguments{
 \item{x_obs}{Numeric Vector}
@@ -22,15 +22,15 @@ MMD(x_obs, x_sim, x_obs_kmmd = NULL, a = NULL, rbf = kernlab::rbfdot(sigma
 This function returns the estimator for the two-sample MMD.
 }
 \examples{
-x_obs <- rnorm(2500)
-x_sim <- rnorm(200)
+x_obs <- rnorm(2000)
+x_sim <- rnorm(2000, 5)
 
 MMD_1 <- MMD(x_obs, x_sim)
 MMD_1
 
 # Precompute x_obs_kmmd for faster speed
 
-rbf = kernlab::rbfdot(sigma = 0.5)
+rbf = kernlab::rbfdot(sigma = 1)
 x_obs_kmmd <- sum(
      kernlab::kernelMatrix(
          rbf,as.matrix(x_obs),as.matrix(x_obs)
@@ -53,9 +53,9 @@ system.time(MMD_3 <- MMD(x_obs, x_sim, x_obs_kmmd, a))
 
 # Different radial basis function
 
-rbf = kernlab::rbfdot(sigma = 1)
+rbf = kernlab::rbfdot(sigma = 0.5)
 
-MMD_4 <- MMD(x_obs, x_sim, x_obs_kmmd, rbf = rbf)
+MMD_4 <- MMD(x_obs, x_sim, rbf = rbf)
 }
 \references{
 Gretton, Arthur, et al. "A kernel method for the two-sample-problem." Advances in neural information processing systems. 2007.
