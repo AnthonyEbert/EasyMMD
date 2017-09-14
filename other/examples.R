@@ -1,4 +1,5 @@
 
+
 library(parallel)
 library(dplyr)
 library(ggplot2)
@@ -6,7 +7,7 @@ library(tidyr)
 
 cl <- makeCluster(detectCores()-1)
 
-ni <- 2000
+ni <- 200
 n_x <- 1500
 n_y <- 1500
 
@@ -30,14 +31,19 @@ MMD_output <- parLapply(cl, c(1:ni), function(i, ...){
 
   MMD_unbiased <- MMD(y, x, bias = FALSE)
 
-  output <- c(MMD_linear_output, MMD_biased, MMD_unbiased)
+  x <- rnorm(n_x)
+  y <- rnorm(n_y, 5)
+
+  MMD_linear_multi <- median(MMD_l_multi(y, x, 1, 10))
+
+  output <- c(MMD_linear_output, MMD_biased, MMD_unbiased, MMD_linear_multi)
 
   return(output)
 })
 
 
-MMD_df <- data.frame(matrix(unlist(MMD_output), ncol = 3, byrow = TRUE))
-names(MMD_df) <- c("MMD_l", "MMD_biased", "MMD_unbiased")
+MMD_df <- data.frame(matrix(unlist(MMD_output), ncol = 4, byrow = TRUE))
+names(MMD_df) <- c("MMD_linear", "MMD_biased", "MMD_unbiased", "MMD_linear_multi")
 
 MMD_df2 <- MMD_df %>% gather()
 

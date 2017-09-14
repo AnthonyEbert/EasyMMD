@@ -2,3 +2,4 @@
 
 export(MMD)
 export(MMD_l)
+export(MMD_l_multi)
