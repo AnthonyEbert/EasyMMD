@@ -3,7 +3,7 @@ Title: Allows users to compute the Maximum Mean Discrepancy (MMD) between two sa
 Version: 0.0.2
 Authors@R: person("Anthony", "Ebert", email = "anthonyebert+CRAN@gmail.com", role = c("aut", "cre"))
 Description: Provides a function similar to the kernlab::kmmd() function except it actually provides the MMD estimate as an output. 
-Depends: R (>= 3.3.3)
+Depends: R (>= 3.3.1)
 License: GPL-2 | file LICENSE
 Encoding: UTF-8
 LazyData: true
