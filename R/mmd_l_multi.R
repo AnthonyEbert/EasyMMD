@@ -13,6 +13,8 @@ MMD_l_multi <- function(x_obs, x_sim, k, sigma = 1){
     output[i] <- MMD_l(sample(x_obs, n), sample(x_sim, n), sigma = sigma)
   }
 
-  return(median(output))
+  output2 <- median(output)
+
+  return(output2)
 }
 
