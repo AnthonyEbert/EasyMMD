@@ -4,6 +4,7 @@
 #' @param x_obs Numeric Vector
 #' @param x_sim Numeric Vector
 #' @param sigma Numeric Kernel size
+#' @param permute Logical Should \code{x_obs} and \code{x_sim} be permuted before MMD_l computation?
 #' @references Gretton, Arthur, et al. "A kernel two-sample test." Journal of Machine Learning Research 13.Mar (2012): 723-773.
 #' @examples
 #' x_obs <- rnorm(2000)
@@ -16,11 +17,17 @@
 #' MMD_linear
 #'
 #' @export
-MMD_l <- function(x_obs, x_sim, sigma = 1){
+MMD_l <- function(x_obs, x_sim, sigma = 1, permute = FALSE){
 
   stopifnot(is.numeric(x_obs) | is.matrix(x_obs))
   stopifnot(is.numeric(x_sim) | is.matrix(x_sim))
-  stopifnot(length(x_obs) == length(x_sim))
+  m = length(x_obs)
+  stopifnot(m == length(x_sim))
+
+  if(permute){
+    x_obs = sample(x_obs, m, replace = FALSE)
+    x_sim = sample(x_sim, m, replace = FALSE)
+  }
 
   m2 <- floor(length(x_obs)/2)
 

@@ -4,7 +4,7 @@
 \alias{MMD_l}
 \title{Compute the MMD between two samples in linear time}
 \usage{
-MMD_l(x_obs, x_sim, sigma = 1)
+MMD_l(x_obs, x_sim, sigma = 1, permute = FALSE)
 }
 \arguments{
 \item{x_obs}{Numeric Vector}
@@ -12,6 +12,8 @@ MMD_l(x_obs, x_sim, sigma = 1)
 \item{x_sim}{Numeric Vector}
 
 \item{sigma}{Numeric Kernel size}
+
+\item{permute}{Logical Should \code{x_obs} and \code{x_sim} be permuted before MMD_l computation?}
 }
 \description{
 Compute the MMD between two samples in linear time
