@@ -11,7 +11,7 @@ MMD_l_multi <- function(x_obs, x_sim, k, sigma = 1, agg = TRUE){
   stopifnot(n == length(x_sim))
 
   for(i in 1:k){
-    output[i] <- MMD_l(sample(x_obs, n), sample(x_sim, n), sigma = sigma)
+    output[i] <- MMD_l(x_obs, x_sim, sigma = sigma, permute = TRUE)
   }
 
   if(agg){
@@ -21,3 +21,8 @@ MMD_l_multi <- function(x_obs, x_sim, k, sigma = 1, agg = TRUE){
   return(output)
 }
 
+
+#' @export
+MMD_test <- function(x){
+  MMD_l_cpp(x, c(1:3), sigma = 1, TRUE)
+}

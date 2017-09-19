@@ -27,7 +27,6 @@ MMD_linear <- MMD_l(x_obs, x_sim)
 
 MMD_full
 MMD_linear
-
 }
 \references{
 Gretton, Arthur, et al. "A kernel two-sample test." Journal of Machine Learning Research 13.Mar (2012): 723-773.
