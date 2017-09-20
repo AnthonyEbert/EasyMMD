@@ -11,15 +11,16 @@ float kernelMatrix_cpp(NumericVector x_obs, NumericVector x_sim, float sigma) {
 
   vec y = as<vec>(x_obs);
   vec x = as<vec>(x_sim);
-  int n = x.size();
+  int n_x = x.size();
+  int n_y = y.size();
 
   float a;
   float output;
 
-  mat outputMatrix(n, n, fill::zeros);
+  mat outputMatrix(n_x, n_y, fill::zeros);
 
-  for(int i = 0; i < n; ++i){
-    for(int j = 0; j < n; ++j){
+  for(int i = 0; i < n_x; ++i){
+    for(int j = 0; j < n_y; ++j){
       a = std::pow(x[i] - y[j], 2);
       outputMatrix(i,j) = exp(- sigma * a);
     }

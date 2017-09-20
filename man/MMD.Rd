@@ -4,10 +4,11 @@
 \alias{MMD}
 \title{Compute the MMD between two samples}
 \usage{
-MMD(x_obs, x_sim, x_obs_kmmd = NULL, a = NULL, rbf = kernlab::rbfdot(sigma
-  = 1), bias = FALSE)
+MMD(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE)
 }
 \arguments{
+\item{bias}{Logical Should the biased or unbiased MMD be computed?}
+
 \item{x_obs}{Numeric Vector}
 
 \item{x_sim}{Numeric Vector}
@@ -17,8 +18,6 @@ MMD(x_obs, x_sim, x_obs_kmmd = NULL, a = NULL, rbf = kernlab::rbfdot(sigma
 \item{a}{The squared norm of x_obs, see \link[kernlab]{kernelFast}}
 
 \item{rbf}{The radial basis function, see \link[kernlab]{kernelMatrix}}
-
-\item{bias}{Logical Should the biased or unbiased MMD be computed?}
 }
 \description{
 This function returns the estimator for the two-sample MMD.
