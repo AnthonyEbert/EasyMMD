@@ -1,52 +1,7 @@
 
 
-#' Compute the MMD between two samples
-#'
-#' @param x_obs Numeric Vector
-#' @param x_sim Numeric Vector
-#' @param x_obs_kmmd Precomputed first term in MMD calculation.
-#' @param a The squared norm of x_obs, see \link[kernlab]{kernelFast}
-#' @param rbf The radial basis function, see \link[kernlab]{kernelMatrix}
-#' @param bias Logical Should the biased or unbiased MMD be computed?
-#' @export
-#' @description This function returns the estimator for the two-sample MMD.
-#' @references Gretton, Arthur, et al. "A kernel method for the two-sample-problem." Advances in neural information processing systems. 2007.
-#' @examples
-#' x_obs <- rnorm(2000)
-#' x_sim <- rnorm(2000, 5)
-#'
-#' MMD_1 <- MMD(x_obs, x_sim)
-#' MMD_1
-#'
-#' # Precompute x_obs_kmmd for faster speed
-#'
-#' rbf = kernlab::rbfdot(sigma = 1)
-#' x_obs_kmmd <- sum(
-#'      kernlab::kernelMatrix(
-#'          rbf,as.matrix(x_obs),as.matrix(x_obs)
-#'      )
-#' )
-#'
-#' MMD_2 <- MMD(x_obs, x_sim, x_obs_kmmd)
-#' MMD_2
-#'
-#' # Precompute the squared norm of x_obs for more speed!
-#'
-#' a <- rowSums(as.matrix(x_obs)^2)
-#'
-#' MMD_3 <- MMD(x_obs, x_sim, x_obs_kmmd, a)
-#' MMD_3
-#'
-#' system.time(MMD_1 <- MMD(x_obs, x_sim))
-#' system.time(MMD_2 <- MMD(x_obs, x_sim, x_obs_kmmd))
-#' system.time(MMD_3 <- MMD(x_obs, x_sim, x_obs_kmmd, a))
-#'
-#' # Different radial basis function
-#'
-#' rbf = kernlab::rbfdot(sigma = 0.5)
-#'
-#' MMD_4 <- MMD(x_obs, x_sim, rbf = rbf)
-MMD <-
+
+MMD_oldR <-
   function(x_obs,
            x_sim,
            x_obs_kmmd = NULL,
@@ -103,5 +58,77 @@ MMD <-
   return(output)
 
 }
+
+
+#' Compute the MMD between two samples
+#'
+#' @useDynLib EasyMMD
+#' @importFrom Rcpp sourceCpp
+#' @param y Numeric Vector
+#' @param x Numeric Vector
+#' @param y_kmmd Precomputed first term in MMD calculation.
+#' @param sigma Numeric Kernel size
+#' @param bias Logical Should the biased or unbiased MMD be computed?
+#' @export
+#' @description This function returns the estimator for the two-sample MMD.
+#' @references Gretton, Arthur, et al. "A kernel method for the two-sample-problem." Advances in neural information processing systems. 2007.
+#' @examples
+#' y <- rnorm(2000)
+#' x <- rnorm(2000, 5)
+#'
+#' MMD_1 <- MMD(y, x)
+#' MMD_1
+#'
+#' # Precompute y_kmmd for faster speed
+#' y_kmmd <- kmmd(y)
+#'
+#' MMD_2 <- MMD(y, x, y_kmmd)
+#' MMD_2
+#'
+#'
+#' system.time(MMD_1 <- MMD(y, x))
+#' system.time(MMD_2 <- MMD(y, x, y_kmmd))
+#'
+#' # Different sigma
+#'
+#' MMD_4 <- MMD(y, x, sigma = 0.5)
+MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE){
+
+  n_x <- length(x)
+  n_y <- length(y)
+
+  if(bias){
+    denom_y = n_y^2
+    denom_x = n_x^2
+    bias_y  = 0
+    bias_x  = 0
+  } else {
+    denom_y = n_y * (n_y - 1)
+    denom_x = n_x * (n_x - 1)
+    bias_y  = n_y
+    bias_x  = n_x
+  }
+
+  if(is.null(y_kmmd)){
+    y_kmmd <- kernelMatrix_sum(y, y, sigma = sigma)
+  }
+
+  term_xx <- (kernelMatrix_sum(x, x, sigma = sigma) - bias_x)/denom_x
+  term_yy <- (y_kmmd - bias_y)/denom_y
+  term_xy <- kernelMatrix_sum(x, y, sigma = sigma)/(n_x*n_y)
+
+  output = term_xx + term_yy - 2*term_xy
+
+  return(output)
+}
+
+
+#' @export
+kmmd <- function(x, sigma = 1){
+  return(kernelMatrix_sum(x, x, sigma = 1))
+}
+
+
+
 
 

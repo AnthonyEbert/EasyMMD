@@ -11,6 +11,8 @@ MMD_l_multi(x_obs, x_sim, k, sigma = 1, agg = TRUE)
 
 \item{x_sim}{Numeric Vector}
 
+\item{k}{Integer Number of permutations}
+
 \item{sigma}{Numeric Kernel size}
 
 \item{agg}{Logical Should output be aggregated by mean?}

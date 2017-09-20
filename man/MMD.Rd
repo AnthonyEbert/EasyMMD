@@ -4,19 +4,16 @@
 \alias{MMD}
 \title{Compute the MMD between two samples}
 \usage{
-MMD(x_obs, x_sim, x_obs_kmmd = NULL, a = NULL, rbf = kernlab::rbfdot(sigma
-  = 1), bias = FALSE)
+MMD(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE)
 }
 \arguments{
-\item{x_obs}{Numeric Vector}
+\item{y}{Numeric Vector}
 
-\item{x_sim}{Numeric Vector}
+\item{x}{Numeric Vector}
 
-\item{x_obs_kmmd}{Precomputed first term in MMD calculation.}
+\item{y_kmmd}{Precomputed first term in MMD calculation.}
 
-\item{a}{The squared norm of x_obs, see \link[kernlab]{kernelFast}}
-
-\item{rbf}{The radial basis function, see \link[kernlab]{kernelMatrix}}
+\item{sigma}{Numeric Kernel size}
 
 \item{bias}{Logical Should the biased or unbiased MMD be computed?}
 }
@@ -24,40 +21,25 @@ MMD(x_obs, x_sim, x_obs_kmmd = NULL, a = NULL, rbf = kernlab::rbfdot(sigma
 This function returns the estimator for the two-sample MMD.
 }
 \examples{
-x_obs <- rnorm(2000)
-x_sim <- rnorm(2000, 5)
+y <- rnorm(2000)
+x <- rnorm(2000, 5)
 
-MMD_1 <- MMD(x_obs, x_sim)
+MMD_1 <- MMD(y, x)
 MMD_1
 
-# Precompute x_obs_kmmd for faster speed
+# Precompute y_kmmd for faster speed
+y_kmmd <- kmmd(y)
 
-rbf = kernlab::rbfdot(sigma = 1)
-x_obs_kmmd <- sum(
-     kernlab::kernelMatrix(
-         rbf,as.matrix(x_obs),as.matrix(x_obs)
-     )
-)
-
-MMD_2 <- MMD(x_obs, x_sim, x_obs_kmmd)
+MMD_2 <- MMD(y, x, y_kmmd)
 MMD_2
 
-# Precompute the squared norm of x_obs for more speed!
 
-a <- rowSums(as.matrix(x_obs)^2)
+system.time(MMD_1 <- MMD(y, x))
+system.time(MMD_2 <- MMD(y, x, y_kmmd))
 
-MMD_3 <- MMD(x_obs, x_sim, x_obs_kmmd, a)
-MMD_3
+# Different sigma
 
-system.time(MMD_1 <- MMD(x_obs, x_sim))
-system.time(MMD_2 <- MMD(x_obs, x_sim, x_obs_kmmd))
-system.time(MMD_3 <- MMD(x_obs, x_sim, x_obs_kmmd, a))
-
-# Different radial basis function
-
-rbf = kernlab::rbfdot(sigma = 0.5)
-
-MMD_4 <- MMD(x_obs, x_sim, rbf = rbf)
+MMD_4 <- MMD(y, x, sigma = 0.5)
 }
 \references{
 Gretton, Arthur, et al. "A kernel method for the two-sample-problem." Advances in neural information processing systems. 2007.

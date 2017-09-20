@@ -2,6 +2,7 @@
 #' Compute the permuted Jack-knife MMD_linear
 #' @param x_obs Numeric Vector
 #' @param x_sim Numeric Vector
+#' @param k Integer Number of permutations
 #' @param sigma Numeric Kernel size
 #' @param agg Logical Should output be aggregated by mean?
 #' @export
