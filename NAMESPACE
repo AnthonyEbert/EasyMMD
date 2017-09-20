@@ -3,6 +3,7 @@
 export(MMD)
 export(MMD_l)
 export(MMD_l_multi)
+export(MMD_test)
 export(kmmd)
 importFrom(Rcpp,sourceCpp)
 useDynLib(EasyMMD)

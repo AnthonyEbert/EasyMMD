@@ -7,7 +7,7 @@ library(tidyr)
 
 cl <- makeCluster(detectCores()-1)
 
-ni <- 200
+ni <- 400
 n_x <- 1500
 n_y <- 1500
 
@@ -34,7 +34,7 @@ MMD_output <- parLapply(cl, c(1:ni), function(i, ...){
   x <- rnorm(n_x)
   y <- rnorm(n_y, 5)
 
-  MMD_linear_multi <- median(MMD_l_multi(y, x, 1, 10))
+  MMD_linear_multi <- median(MMD_l_multi(y, x, 10, 1))
 
   output <- c(MMD_linear_output, MMD_biased, MMD_unbiased, MMD_linear_multi)
 
