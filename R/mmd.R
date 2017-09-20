@@ -105,3 +105,25 @@ MMD <-
 }
 
 
+#' @export
+MMD_test_full <- function(x_obs, x_sim, sigma = 1){
+
+  n <- length(x_obs)
+
+  stopifnot(n == length(x_sim))
+  x <- x_sim
+  y <- x_obs
+
+  term_xx <- kernelMatrix_cpp(x, x, sigma = 1)/(n^2)
+  term_yy <- kernelMatrix_cpp(y, y, sigma = 1)/(n^2)
+  term_xy <- kernelMatrix_cpp(x, y, sigma = 1)/(n^2)
+
+  output = term_xx + term_yy - 2*term_xy
+
+  return(output)
+}
+
+
+
+
+
