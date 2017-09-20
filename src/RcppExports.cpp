@@ -6,16 +6,16 @@
 
 using namespace Rcpp;
 
-// kernelMatrix_cpp
-float kernelMatrix_cpp(NumericVector x_obs, NumericVector x_sim, float sigma);
-RcppExport SEXP _EasyMMD_kernelMatrix_cpp(SEXP x_obsSEXP, SEXP x_simSEXP, SEXP sigmaSEXP) {
+// kernelMatrix_sum
+double kernelMatrix_sum(NumericVector x_obs, NumericVector x_sim, float sigma);
+RcppExport SEXP _EasyMMD_kernelMatrix_sum(SEXP x_obsSEXP, SEXP x_simSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x_obs(x_obsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type x_sim(x_simSEXP);
     Rcpp::traits::input_parameter< float >::type sigma(sigmaSEXP);
-    rcpp_result_gen = Rcpp::wrap(kernelMatrix_cpp(x_obs, x_sim, sigma));
+    rcpp_result_gen = Rcpp::wrap(kernelMatrix_sum(x_obs, x_sim, sigma));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -46,7 +46,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_EasyMMD_kernelMatrix_cpp", (DL_FUNC) &_EasyMMD_kernelMatrix_cpp, 3},
+    {"_EasyMMD_kernelMatrix_sum", (DL_FUNC) &_EasyMMD_kernelMatrix_sum, 3},
     {"_EasyMMD_MMD_l_cpp", (DL_FUNC) &_EasyMMD_MMD_l_cpp, 4},
     {"_EasyMMD_shuffle_arma", (DL_FUNC) &_EasyMMD_shuffle_arma, 1},
     {NULL, NULL, 0}

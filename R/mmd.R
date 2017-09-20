@@ -124,12 +124,12 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE){
   }
 
   if(is.null(y_kmmd)){
-    y_kmmd <- kernelMatrix_cpp(y, y, sigma = sigma)
+    y_kmmd <- kernelMatrix_sum(y, y, sigma = sigma)
   }
 
-  term_xx <- (kernelMatrix_cpp(x, x, sigma = sigma) - bias_x)/denom_x
+  term_xx <- (kernelMatrix_sum(x, x, sigma = sigma) - bias_x)/denom_x
   term_yy <- (y_kmmd - bias_y)/denom_y
-  term_xy <- kernelMatrix_cpp(x, y, sigma = sigma)/(n_x*n_y)
+  term_xy <- kernelMatrix_sum(x, y, sigma = sigma)/(n_x*n_y)
 
   output = term_xx + term_yy - 2*term_xy
 
@@ -139,7 +139,7 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE){
 
 #' @export
 kmmd <- function(x, sigma = 1){
-  return(kernelMatrix_cpp(x, x, sigma = 1))
+  return(kernelMatrix_sum(x, x, sigma = 1))
 }
 
 
