@@ -69,6 +69,7 @@ MMD_oldR <-
 #' @param y_kmmd Precomputed first term in MMD calculation.
 #' @param sigma Numeric Kernel size
 #' @param bias Logical Should the biased or unbiased MMD be computed?
+#' @param threshold Filter out values for exponentiation
 #' @export
 #' @description This function returns the estimator for the two-sample MMD.
 #' @references Gretton, Arthur, et al. "A kernel method for the two-sample-problem." Advances in neural information processing systems. 2007.
@@ -92,7 +93,24 @@ MMD_oldR <-
 #' # Different sigma
 #'
 #' MMD_4 <- MMD(y, x, sigma = 0.5)
-MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE){
+MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf){
+
+  if(is.infinite(threshold)){
+    kernsum <- function(...){
+      kernelMatrix_sum(
+        sigma = sigma,
+        ...
+      )
+    }
+  } else {
+    kernsum <- function(...){
+      kernelMatrix_threshold_sum(
+        sigma = sigma,
+        threshold = threshold,
+        ...
+      )
+    }
+  }
 
   n_x <- length(x)
   n_y <- length(y)
@@ -110,12 +128,12 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE){
   }
 
   if(is.null(y_kmmd)){
-    y_kmmd <- kernelMatrix_sum(y, y, sigma = sigma)
+    y_kmmd <- kernsum(y, y)
   }
 
-  term_xx <- (kernelMatrix_sum(x, x, sigma = sigma) - bias_x)/denom_x
+  term_xx <- (kernsum(x, x) - bias_x)/denom_x
   term_yy <- (y_kmmd - bias_y)/denom_y
-  term_xy <- kernelMatrix_sum(x, y, sigma = sigma)/(n_x*n_y)
+  term_xy <- kernsum(x, y)/(n_x*n_y)
 
   output = term_xx + term_yy - 2*term_xy
 

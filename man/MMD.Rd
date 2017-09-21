@@ -4,7 +4,7 @@
 \alias{MMD}
 \title{Compute the MMD between two samples}
 \usage{
-MMD(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE)
+MMD(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf)
 }
 \arguments{
 \item{y}{Numeric Vector}
@@ -16,6 +16,8 @@ MMD(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE)
 \item{sigma}{Numeric Kernel size}
 
 \item{bias}{Logical Should the biased or unbiased MMD be computed?}
+
+\item{threshold}{Filter out values for exponentiation}
 }
 \description{
 This function returns the estimator for the two-sample MMD.
