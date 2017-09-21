@@ -159,7 +159,7 @@ MMD_test <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE){
 }
 
 #' @export
-MMD_test2 <- function(y, x, y_kmmd = NULL, sigma = 1, degree = 2, bias = FALSE){
+MMD_test2 <- function(y, x, y_kmmd = NULL, sigma = 1, degree = 2, offset = 0, bias = FALSE){
 
   n_x <- length(x)
   n_y <- length(y)
@@ -177,14 +177,47 @@ MMD_test2 <- function(y, x, y_kmmd = NULL, sigma = 1, degree = 2, bias = FALSE){
   }
 
   if(is.null(y_kmmd)){
-    y_kmmd <- kernelMatrix_poly_sum(y, y, sigma = sigma, degree = degree)
+    y_kmmd <- kernelMatrix_poly_sum(y, y, sigma = sigma, degree = degree, offset = offset)
   }
 
-  term_xx <- (kernelMatrix_poly_sum(x, x, sigma = sigma, degree = degree) - bias_x)/denom_x
+  term_xx <- (kernelMatrix_poly_sum(x, x, sigma = sigma, degree = degree, offset = offset) - bias_x)/denom_x
   term_yy <- (y_kmmd - bias_y)/denom_y
-  term_xy <- kernelMatrix_poly_sum(x, y, sigma = sigma, degree = degree)/(n_x*n_y)
+  term_xy <- kernelMatrix_poly_sum(x, y, sigma = sigma, degree = degree, offset = offset)/(n_x*n_y)
 
   output = term_xx + term_yy - 2*term_xy
 
   return(output)
 }
+
+
+#' @export
+MMD_test3 <- function(y, x, y_kmmd = NULL, sigma = 1, threshold = 4, bias = FALSE){
+
+  n_x <- length(x)
+  n_y <- length(y)
+
+  if(bias){
+    denom_y = n_y^2
+    denom_x = n_x^2
+    bias_y  = 0
+    bias_x  = 0
+  } else {
+    denom_y = n_y * (n_y - 1)
+    denom_x = n_x * (n_x - 1)
+    bias_y  = n_y
+    bias_x  = n_x
+  }
+
+  if(is.null(y_kmmd)){
+    y_kmmd <- kernelMatrix_threshold_sum(y, y, sigma = sigma, threshold = threshold)
+  }
+
+  term_xx <- (kernelMatrix_threshold_sum(x, x, sigma = sigma, threshold = threshold) - bias_x)/denom_x
+  term_yy <- (y_kmmd - bias_y)/denom_y
+  term_xy <- kernelMatrix_threshold_sum(x, y, sigma = sigma, threshold = threshold)/(n_x*n_y)
+
+  output = term_xx + term_yy - 2*term_xy
+
+  return(output)
+}
+

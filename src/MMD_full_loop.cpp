@@ -29,6 +29,33 @@ double kernelMatrix_sum(NumericVector x_obs, NumericVector x_sim, float sigma) {
 }
 
 
+// [[Rcpp::export]]
+double kernelMatrix_threshold_sum(NumericVector x_obs, NumericVector x_sim, float sigma, float threshold) {
+
+  vec y = as<vec>(x_obs);
+  vec x = as<vec>(x_sim);
+  int n_x = x.size();
+  int n_y = y.size();
+
+  double a;
+  double b;
+
+  double output_2 = 0;
+
+  for(int i = 0; i < n_x; ++i){
+    for(int j = 0; j < n_y; ++j){
+      b = abs(x[i] - y[j]);
+      if(b < threshold/sigma){
+        a = std::pow(b, 2);
+        output_2 += exp(- sigma * a);
+      }
+    }
+  }
+
+  return(output_2);
+}
+
+
 
 // [[Rcpp::export]]
 double kernelMatrix_linear_sum(NumericVector x_obs, NumericVector x_sim, float sigma) {
@@ -53,7 +80,7 @@ double kernelMatrix_linear_sum(NumericVector x_obs, NumericVector x_sim, float s
 }
 
 // [[Rcpp::export]]
-double kernelMatrix_poly_sum(NumericVector x_obs, NumericVector x_sim, float sigma, float degree) {
+double kernelMatrix_poly_sum(NumericVector x_obs, NumericVector x_sim, float sigma, int degree, float offset) {
 
   vec y = as<vec>(x_obs);
   vec x = as<vec>(x_sim);
@@ -66,7 +93,7 @@ double kernelMatrix_poly_sum(NumericVector x_obs, NumericVector x_sim, float sig
 
   for(int i = 0; i < n_x; ++i){
     for(int j = 0; j < n_y; ++j){
-      a = pow(sigma * x[i] * y[j], degree);
+      a = pow(sigma * x[i] * y[j] + offset, degree);
       output_2 += a;
     }
   }
