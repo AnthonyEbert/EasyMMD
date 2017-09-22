@@ -142,8 +142,24 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf){
 
 
 #' @export
-kmmd <- function(x, sigma = 1){
-  return(kernelMatrix_sum(x, x, sigma = 1))
+kmmd <- function(y, sigma = 1, threshold = Inf){
+  if(is.infinite(threshold)){
+    kernsum <- function(...){
+      kernelMatrix_sum(
+        sigma = sigma,
+        ...
+      )
+    }
+  } else {
+    kernsum <- function(...){
+      kernelMatrix_threshold_sum(
+        sigma = sigma,
+        threshold = threshold,
+        ...
+      )
+    }
+  }
+  return(kernsum(y, y))
 }
 
 
