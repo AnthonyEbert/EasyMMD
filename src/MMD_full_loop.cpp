@@ -22,6 +22,15 @@ double kernelMatrix_sum(NumericVector x_obs, NumericVector x_sim, float sigma) {
     for(int j = 0; j < n_y; ++j){
       a = std::pow(x[i] - y[j], 2);
       output_2 += exp(- sigma * a);
+
+      if(j % 2048 == 0)
+      {
+        Rcpp::checkUserInterrupt();
+      }
+    }
+    if(i % 2048 == 0)
+    {
+      Rcpp::checkUserInterrupt();
     }
   }
 
@@ -49,6 +58,15 @@ double kernelMatrix_threshold_sum(NumericVector x_obs, NumericVector x_sim, floa
         a = std::pow(b, 2);
         output_2 += exp(- sigma * a);
       }
+
+      if(j % 2048 == 0)
+      {
+        Rcpp::checkUserInterrupt();
+      }
+    }
+    if(i % 2048 == 0)
+    {
+      Rcpp::checkUserInterrupt();
     }
   }
 
