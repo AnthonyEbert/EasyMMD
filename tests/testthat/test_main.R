@@ -6,7 +6,7 @@ x <- rnorm(4000)
 y <- rnorm(4500, 5)
 
 test_that("MMD calc", {
-  expect_equal(MMD(x,y,5), EasyMMD:::MMD_oldR(x,y))
+  expect_equal(MMD(x,y, threshold = 6), EasyMMD:::MMD_oldR(x,y))
 })
 
 print(MMD(x,y))
