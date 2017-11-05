@@ -3,3 +3,4 @@
 ^other/examples\.R$
 ^README\.Rmd$
 ^README-.*\.png$
+^\.travis\.yml$
