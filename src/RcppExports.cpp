@@ -33,10 +33,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// kernelMatrix_threshold
+arma::mat kernelMatrix_threshold(NumericVector x_obs, NumericVector x_sim, float sigma, float threshold);
+RcppExport SEXP _EasyMMD_kernelMatrix_threshold(SEXP x_obsSEXP, SEXP x_simSEXP, SEXP sigmaSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x_obs(x_obsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x_sim(x_simSEXP);
+    Rcpp::traits::input_parameter< float >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< float >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(kernelMatrix_threshold(x_obs, x_sim, sigma, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_EasyMMD_kernelMatrix_sum", (DL_FUNC) &_EasyMMD_kernelMatrix_sum, 3},
     {"_EasyMMD_kernelMatrix_threshold_sum", (DL_FUNC) &_EasyMMD_kernelMatrix_threshold_sum, 4},
+    {"_EasyMMD_kernelMatrix_threshold", (DL_FUNC) &_EasyMMD_kernelMatrix_threshold, 4},
     {NULL, NULL, 0}
 };
 

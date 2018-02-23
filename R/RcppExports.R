@@ -9,3 +9,7 @@ kernelMatrix_threshold_sum <- function(x_obs, x_sim, sigma, threshold) {
     .Call('_EasyMMD_kernelMatrix_threshold_sum', PACKAGE = 'EasyMMD', x_obs, x_sim, sigma, threshold)
 }
 
+kernelMatrix_threshold <- function(x_obs, x_sim, sigma, threshold) {
+    .Call('_EasyMMD_kernelMatrix_threshold', PACKAGE = 'EasyMMD', x_obs, x_sim, sigma, threshold)
+}
+
