@@ -7,7 +7,7 @@ using namespace Rcpp;
 using namespace arma;
 
 inline
-  float exp512(float x) {
+  double exp512(double x) {
     x = 1 + x / 512;
     x = x * x;
     x = x * x;
@@ -94,23 +94,23 @@ double kernelMatrix_threshold_sum(NumericVector x_obs, NumericVector x_sim, floa
 }
 
 // [[Rcpp::export]]
-float kernelMatrix_threshold_sums(const arma::fvec& x_u, const arma::fvec& y_u, const float sigma, const float threshold, bool approx_exp) {
+double kernelMatrix_threshold_sums(const arma::vec& x_u, const arma::vec& y_u, const float sigma, const float threshold, int approx_exp) {
 
-  const arma::fvec y = sort(y_u);
-  const arma::fvec x = sort(x_u);
+  const arma::vec y = sort(y_u);
+  const arma::vec x = sort(x_u);
   const unsigned int n_x = x.size();
   const unsigned int n_y = y.size();
 
-  float b;
+  double b;
   const float c = threshold;
 
-  float output_2 = 0;
+  double output_2 = 0;
   int start_p = 0;
   int end_p = n_y;
-  float (*exp_f)(float);
+  double (*exp_f)(double);
 
   if(approx_exp == 0){
-    exp_f = &exp;
+    exp_f = &std::exp;
   } else if(approx_exp == 1) {
     exp_f = &exp512;
   }

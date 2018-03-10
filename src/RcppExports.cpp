@@ -34,16 +34,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // kernelMatrix_threshold_sums
-float kernelMatrix_threshold_sums(const arma::fvec& x_u, const arma::fvec& y_u, const float sigma, const float threshold, bool approx_exp);
+double kernelMatrix_threshold_sums(const arma::vec& x_u, const arma::vec& y_u, const float sigma, const float threshold, int approx_exp);
 RcppExport SEXP _EasyMMD_kernelMatrix_threshold_sums(SEXP x_uSEXP, SEXP y_uSEXP, SEXP sigmaSEXP, SEXP thresholdSEXP, SEXP approx_expSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::fvec& >::type x_u(x_uSEXP);
-    Rcpp::traits::input_parameter< const arma::fvec& >::type y_u(y_uSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type x_u(x_uSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type y_u(y_uSEXP);
     Rcpp::traits::input_parameter< const float >::type sigma(sigmaSEXP);
     Rcpp::traits::input_parameter< const float >::type threshold(thresholdSEXP);
-    Rcpp::traits::input_parameter< bool >::type approx_exp(approx_expSEXP);
+    Rcpp::traits::input_parameter< int >::type approx_exp(approx_expSEXP);
     rcpp_result_gen = Rcpp::wrap(kernelMatrix_threshold_sums(x_u, y_u, sigma, threshold, approx_exp));
     return rcpp_result_gen;
 END_RCPP
