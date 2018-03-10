@@ -32,7 +32,7 @@
 #' # Different sigma
 #'
 #' MMD_4 <- MMD(y, x, sigma = 0.5)
-MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf){
+MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, approx_exp = 0){
 
   if(is.infinite(threshold)){
     kernsum <- function(...){
@@ -43,9 +43,10 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf){
     }
   } else {
     kernsum <- function(...){
-      kernelMatrix_threshold_sum(
+      kernelMatrix_threshold_sums(
         sigma = sigma,
         threshold = threshold,
+        approx_exp = approx_exp,
         ...
       )
     }

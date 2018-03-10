@@ -4,7 +4,8 @@
 \alias{MMD}
 \title{Compute the MMD between two samples}
 \usage{
-MMD(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf)
+MMD(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf,
+  approx_exp = 0)
 }
 \arguments{
 \item{y}{Numeric Vector}
