@@ -6,18 +6,15 @@ using namespace std;
 using namespace Rcpp;
 using namespace arma;
 
+
 inline
-  double exp512(double x) {
-    x = 1 + x / 512;
-    x = x * x;
-    x = x * x;
-    x = x * x;
-    x = x * x;
-    x = x * x;
-    x = x * x;
-    x = x * x;
-    x = x * x;
-    x = x * x;
+  double expApprox(double x) {
+    int n = 10;
+
+    x = 1 + x / pow(2, n);
+    for(int i = 0; i < n; ++i){
+      x = x * x;
+    }
     return x;
   }
 
@@ -41,7 +38,7 @@ double kernelMatrix_sum(const arma::vec& x, const arma::vec& y, const float sigm
   if(approx_exp == 0){
     exp_f = &std::exp;
   } else if(approx_exp == 1) {
-    exp_f = &exp512;
+    exp_f = &expApprox;
   } else if(approx_exp == 2) {
     exp_f = &ident;
   }
@@ -84,7 +81,7 @@ double kernelMatrix_threshold_sums(const arma::vec& x_u, const arma::vec& y_u, c
   if(approx_exp == 0){
     exp_f = &std::exp;
   } else if(approx_exp == 1) {
-    exp_f = &exp512;
+    exp_f = &expApprox;
   }
 
   // int n_start = 0;
