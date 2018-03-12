@@ -20,9 +20,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// kernelMatrix_threshold_sums
-double kernelMatrix_threshold_sums(const arma::vec& x_u, const arma::vec& y_u, const float sigma, const float threshold, int approx_exp);
-RcppExport SEXP _EasyMMD_kernelMatrix_threshold_sums(SEXP x_uSEXP, SEXP y_uSEXP, SEXP sigmaSEXP, SEXP thresholdSEXP, SEXP approx_expSEXP) {
+// kernelMatrix_threshold_sum
+double kernelMatrix_threshold_sum(const arma::vec& x_u, const arma::vec& y_u, const float sigma, const float threshold, int approx_exp);
+RcppExport SEXP _EasyMMD_kernelMatrix_threshold_sum(SEXP x_uSEXP, SEXP y_uSEXP, SEXP sigmaSEXP, SEXP thresholdSEXP, SEXP approx_expSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -31,14 +31,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const float >::type sigma(sigmaSEXP);
     Rcpp::traits::input_parameter< const float >::type threshold(thresholdSEXP);
     Rcpp::traits::input_parameter< int >::type approx_exp(approx_expSEXP);
-    rcpp_result_gen = Rcpp::wrap(kernelMatrix_threshold_sums(x_u, y_u, sigma, threshold, approx_exp));
+    rcpp_result_gen = Rcpp::wrap(kernelMatrix_threshold_sum(x_u, y_u, sigma, threshold, approx_exp));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_EasyMMD_kernelMatrix_sum", (DL_FUNC) &_EasyMMD_kernelMatrix_sum, 4},
-    {"_EasyMMD_kernelMatrix_threshold_sums", (DL_FUNC) &_EasyMMD_kernelMatrix_threshold_sums, 5},
+    {"_EasyMMD_kernelMatrix_threshold_sum", (DL_FUNC) &_EasyMMD_kernelMatrix_threshold_sum, 5},
     {NULL, NULL, 0}
 };
 

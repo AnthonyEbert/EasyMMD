@@ -44,7 +44,7 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, a
     }
   } else {
     kernsum <- function(...){
-      kernelMatrix_threshold_sums(
+      kernelMatrix_threshold_sum(
         sigma = sigma,
         threshold = threshold,
         approx_exp = approx_exp,

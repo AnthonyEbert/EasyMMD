@@ -63,7 +63,7 @@ double kernelMatrix_sum(const arma::vec& x, const arma::vec& y, const float sigm
 }
 
 // [[Rcpp::export]]
-double kernelMatrix_threshold_sums(const arma::vec& x_u, const arma::vec& y_u, const float sigma, const float threshold, int approx_exp) {
+double kernelMatrix_threshold_sum(const arma::vec& x_u, const arma::vec& y_u, const float sigma, const float threshold, int approx_exp) {
 
   const arma::vec y = sort(y_u);
   const arma::vec x = sort(x_u);

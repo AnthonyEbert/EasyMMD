@@ -5,7 +5,7 @@ kernelMatrix_sum <- function(x, y, sigma, approx_exp) {
     .Call('_EasyMMD_kernelMatrix_sum', PACKAGE = 'EasyMMD', x, y, sigma, approx_exp)
 }
 
-kernelMatrix_threshold_sums <- function(x_u, y_u, sigma, threshold, approx_exp) {
-    .Call('_EasyMMD_kernelMatrix_threshold_sums', PACKAGE = 'EasyMMD', x_u, y_u, sigma, threshold, approx_exp)
+kernelMatrix_threshold_sum <- function(x_u, y_u, sigma, threshold, approx_exp) {
+    .Call('_EasyMMD_kernelMatrix_threshold_sum', PACKAGE = 'EasyMMD', x_u, y_u, sigma, threshold, approx_exp)
 }
 
