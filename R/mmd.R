@@ -38,6 +38,7 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, a
     kernsum <- function(...){
       kernelMatrix_sum(
         sigma = sigma,
+        approx_exp = approx_exp,
         ...
       )
     }

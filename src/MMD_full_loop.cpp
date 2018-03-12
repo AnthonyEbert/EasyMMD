@@ -22,62 +22,34 @@ inline
   }
 
 inline
-  float ident(float x) {
-    return -x;
+  double ident(double x) {
+    return -2 * x;
   }
 
 // [[Rcpp::export]]
-double kernelMatrix_sum(NumericVector x_obs, NumericVector x_sim, float sigma) {
+double kernelMatrix_sum(const arma::vec& x, const arma::vec& y, const float sigma, int approx_exp) {
 
-  vec y = as<vec>(x_obs);
-  vec x = as<vec>(x_sim);
   int n_x = x.size();
   int n_y = y.size();
 
-  double a;
-
-  double output_2 = 0;
-
-  for(int i = 0; i < n_x; ++i){
-    for(int j = 0; j < n_y; ++j){
-      a = std::pow(x[i] - y[j], 2);
-      output_2 += exp(- sigma * a);
-
-      if(j % 2048 == 0)
-      {
-        Rcpp::checkUserInterrupt();
-      }
-    }
-    if(i % 2048 == 0)
-    {
-      Rcpp::checkUserInterrupt();
-    }
-  }
-
-  return(output_2);
-}
-
-
-// [[Rcpp::export]]
-double kernelMatrix_threshold_sum(NumericVector x_obs, NumericVector x_sim, float sigma, float threshold) {
-
-  vec y = as<vec>(x_obs);
-  vec x = as<vec>(x_sim);
-  int n_x = x.size();
-  int n_y = y.size();
-
-  double a;
   double b;
 
   double output_2 = 0;
 
+  double (*exp_f)(double);
+
+  if(approx_exp == 0){
+    exp_f = &std::exp;
+  } else if(approx_exp == 1) {
+    exp_f = &exp512;
+  } else if(approx_exp == 2) {
+    exp_f = &ident;
+  }
+
   for(int i = 0; i < n_x; ++i){
     for(int j = 0; j < n_y; ++j){
-      b = abs(x[i] - y[j]);
-      if(b < threshold/sigma){
-        a = std::pow(b, 2);
-        output_2 += exp(- sigma * a);
-      }
+      b = (y[j] - x[i])/sigma;
+      output_2 += exp_f(- 0.5 * b * b);
 
       if(j % 2048 == 0)
       {
@@ -132,7 +104,7 @@ double kernelMatrix_threshold_sums(const arma::vec& x_u, const arma::vec& y_u, c
         }
       } else {
         //a = b * b;
-        output_2 += exp_f(- b * b);
+        output_2 += exp_f(- 0.5 * b * b);
 
         // if(approx_exp){
         //   output_2 += exp512(- b * b);
