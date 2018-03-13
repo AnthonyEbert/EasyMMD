@@ -8,22 +8,25 @@ MMD(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf,
   approx_exp = 0)
 }
 \arguments{
-\item{y}{Numeric Vector}
+\item{y}{numeric vector.}
 
-\item{x}{Numeric Vector}
+\item{x}{numeric vector.}
 
-\item{y_kmmd}{Precomputed first term in MMD calculation.}
+\item{y_kmmd}{precomputed first term in MMD calculation.}
 
-\item{sigma}{Numeric Kernel size}
+\item{sigma}{numeric kernel standard deviation.}
 
-\item{bias}{Logical Should the biased or unbiased MMD be computed?}
+\item{bias}{logical; if \code{TRUE} the biased MMD is computed rather than the unbiased MMD. This can be useful since the biased MMD is always positive.}
 
-\item{threshold}{Filter out values for exponentiation}
+\item{threshold}{numeric filter out values for exponentiation.}
+
+\item{approx_exp}{integer; if 0 the usual function for the exponential distribution is used; if 1 a much faster but less accurate version of the exponential distribution is used.}
 }
 \description{
 This function returns the estimator for the two-sample MMD.
 }
 \examples{
+set.seed(1)
 y <- rnorm(2000)
 x <- rnorm(2000, 5)
 

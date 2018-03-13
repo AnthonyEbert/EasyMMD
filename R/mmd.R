@@ -3,16 +3,18 @@
 #'
 #' @useDynLib EasyMMD
 #' @importFrom Rcpp sourceCpp
-#' @param y Numeric Vector
-#' @param x Numeric Vector
-#' @param y_kmmd Precomputed first term in MMD calculation.
-#' @param sigma Numeric Kernel size
-#' @param bias Logical Should the biased or unbiased MMD be computed?
-#' @param threshold Filter out values for exponentiation
+#' @param y numeric vector.
+#' @param x numeric vector.
+#' @param y_kmmd precomputed first term in MMD calculation.
+#' @param sigma numeric kernel standard deviation.
+#' @param bias logical; if \code{TRUE} the biased MMD is computed rather than the unbiased MMD. This can be useful since the biased MMD is always positive.
+#' @param threshold numeric filter out values for exponentiation.
+#' @param approx_exp integer; if 0 the usual function for the exponential distribution is used; if 1 a much faster but less accurate version of the exponential distribution is used.
 #' @export
 #' @description This function returns the estimator for the two-sample MMD.
 #' @references Gretton, Arthur, et al. "A kernel method for the two-sample-problem." Advances in neural information processing systems. 2007.
 #' @examples
+#' set.seed(1)
 #' y <- rnorm(2000)
 #' x <- rnorm(2000, 5)
 #'
@@ -82,12 +84,17 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, a
 }
 
 
+#' Compute the kmmd for one sample \code{y}
+#' @param y numeric Vector
+#' @param sigma numeric kernel standard deviation
+#' @param threshold numeric filter out values for exponentiation.
 #' @export
 kmmd <- function(y, sigma = 1, threshold = Inf){
   if(is.infinite(threshold)){
     kernsum <- function(...){
       kernelMatrix_sum(
         sigma = sigma,
+        approx_exp = 0,
         ...
       )
     }
@@ -96,6 +103,7 @@ kmmd <- function(y, sigma = 1, threshold = Inf){
       kernelMatrix_threshold_sum(
         sigma = sigma,
         threshold = threshold,
+        approx_exp = 0,
         ...
       )
     }
