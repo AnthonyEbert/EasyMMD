@@ -3,20 +3,21 @@ output: github_document
 ---
 
 [![Build Status](https://travis-ci.org/AnthonyEbert/EasyMMD.svg?branch=master)](https://travis-ci.org/AnthonyEbert/EasyMMD)
+[![codecov](https://codecov.io/gh/AnthonyEbert/queuecomputer/branch/master/graph/badge.svg)](https://codecov.io/gh/AnthonyEbert/queuecomputer)
+
 
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # EasyMMD
 
-The goal of EasyMMD is to ...
+Gretton et al. (2007) introduced Maximum Mean Discrepancy (MMD). EasyMMD in an R package which provides a simple (hopefully!) and computationally efficient way to compute the MMD between two datasets.   
 
 ## Installation
 
 You can install EasyMMD from github with:
 
 ```{r gh-installation, eval = FALSE}
-# install.packages("devtools")
 devtools::install_github("AnthonyEbert/EasyMMD")
 ```
 
@@ -42,3 +43,7 @@ MMD(y,x, y_kmmd)
 
 microbenchmark::microbenchmark(MMD(y,x), MMD(y,x, y_kmmd), times = 10)
 ```
+
+## References
+
+Gretton, A., Borgwardt, K. M., Rasch, M., Schölkopf, B., & Smola, A. J. (2007). A kernel method for the two-sample-problem. In Advances in neural information processing systems (pp. 513-520).
