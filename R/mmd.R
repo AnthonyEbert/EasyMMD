@@ -41,41 +41,9 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, a
   if(!is.matrix(x)){
     n_x <- length(x)
     n_y <- length(y)
-
-    if(is.infinite(threshold)){
-      kernsum <- function(...){
-        kernelMatrix_sum(
-          sigma = sigma,
-          approx_exp = approx_exp,
-          ...
-        )
-      }
-    } else {
-      kernsum <- function(...){
-        kernelMatrix_threshold_sum(
-          sigma = sigma,
-          threshold = threshold,
-          approx_exp = approx_exp,
-          ...
-        )
-      }
-    }
-  } else if(is.matrix(x)) {
-
+  } else {
     n_x <- dim(x)[1]
     n_y <- dim(y)[1]
-
-    stopifnot(dim(x)[2] == dim(y)[2])
-    stopifnot(dim(sigma)[1] == dim(sigma)[2])
-    stopifnot(dim(sigma)[1] == dim(x)[2])
-
-    Sinv <- solve(sigma)
-    kernsum <- function(...){
-      kernelMatrix_sum_multi(
-        Sinv = Sinv,
-        ...
-      )
-    }
   }
 
   if(bias){
@@ -103,6 +71,26 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, a
   return(output)
 }
 
+kernsum <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, approx_exp = 0){
+
+  if(!is.matrix(x)){
+    if(is.infinite(threshold)){
+        return(kernelMatrix_sum(y, x, sigma = sigma, approx_exp = approx_exp))
+    } else {
+        return(kernelMatrix_threshold_sum(y, x, sigma = sigma, approx_exp = approx_exp))
+    }
+  } else {
+
+    stopifnot(dim(x)[2] == dim(y)[2])
+    stopifnot(dim(sigma)[1] == dim(sigma)[2])
+    stopifnot(dim(sigma)[1] == dim(x)[2])
+
+    Sinv <- solve(sigma)
+
+    return(kernelMatrix_sum_multi(y, x, Sinv = Sinv))
+  }
+}
+
 
 #' Compute the kmmd for one sample \code{y}
 #' @param y numeric Vector
@@ -110,6 +98,8 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, a
 #' @param threshold numeric filter out values for exponentiation.
 #' @export
 kmmd <- function(y, sigma = 1, threshold = Inf){
+  kernsum(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, approx_exp = 0)
+
   if(is.infinite(threshold)){
     kernsum <- function(...){
       kernelMatrix_sum(
