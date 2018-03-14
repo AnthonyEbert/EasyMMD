@@ -19,16 +19,15 @@ inline
 
 
 
-// [[Rcpp::export]]
-double maha(arma::mat x, arma::mat y, arma::mat Sinv) {
-  arma::mat out_mat = (x - y) * Sinv * (x.t() - y.t());
-  double out = arma::accu(out_mat);
-  return(out);
+inline
+  double maha(arma::mat x, arma::mat y, arma::mat Sinv) {
+    arma::mat out_mat = (x - y) * Sinv * (x.t() - y.t());
+    double out = arma::accu(out_mat);
+    return(out);
+  }
 
-}
-
 // [[Rcpp::export]]
-double kernelMatrix_sum_multi(const arma::mat x, const arma::mat y, const arma::mat Sinv) {
+double kernelMatrix_sum_multi(const arma::mat& x, const arma::mat& y, const arma::mat Sinv) {
 
   int n_x = x.n_rows;
   int n_y = y.n_rows;
