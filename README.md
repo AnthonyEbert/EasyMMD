@@ -32,7 +32,7 @@ y <- rnorm(n, 5)
 MMD(y,x)
 ```
 
-    ## [1] 1.163502
+    ## [1] 1.139035
 
 ``` r
 # For faster computation, precompute part of the MMD for the observed data y
@@ -42,7 +42,7 @@ y_kmmd <- kmmd(y)
 MMD(y,x, y_kmmd)
 ```
 
-    ## [1] 1.163502
+    ## [1] 1.139035
 
 ``` r
 microbenchmark::microbenchmark(MMD(y,x), MMD(y,x, y_kmmd), times = 10)
@@ -50,8 +50,8 @@ microbenchmark::microbenchmark(MMD(y,x), MMD(y,x, y_kmmd), times = 10)
 
     ## Unit: milliseconds
     ##               expr      min       lq     mean   median       uq      max
-    ##          MMD(y, x) 50.64673 50.67129 51.51340 51.19359 51.58215 54.11431
-    ##  MMD(y, x, y_kmmd) 33.76800 33.78736 34.34702 34.01918 34.66659 36.21584
+    ##          MMD(y, x) 50.37642 50.63704 51.08804 50.85923 51.11588 52.66734
+    ##  MMD(y, x, y_kmmd) 33.73091 33.77430 34.43660 33.98259 34.32549 37.97717
     ##  neval cld
     ##     10   b
     ##     10  a

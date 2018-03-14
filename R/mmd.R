@@ -36,27 +36,47 @@
 #' MMD_4 <- MMD(y, x, sigma = 0.5)
 MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, approx_exp = 0){
 
-  if(is.infinite(threshold)){
-    kernsum <- function(...){
-      kernelMatrix_sum(
-        sigma = sigma,
-        approx_exp = approx_exp,
-        ...
-      )
+  stopifnot(class(x) == class(y))
+
+  if(!is.matrix(x)){
+    n_x <- length(x)
+    n_y <- length(y)
+
+    if(is.infinite(threshold)){
+      kernsum <- function(...){
+        kernelMatrix_sum(
+          sigma = sigma,
+          approx_exp = approx_exp,
+          ...
+        )
+      }
+    } else {
+      kernsum <- function(...){
+        kernelMatrix_threshold_sum(
+          sigma = sigma,
+          threshold = threshold,
+          approx_exp = approx_exp,
+          ...
+        )
+      }
     }
-  } else {
+  } else if(is.matrix(x)) {
+
+    n_x <- dim(x)[1]
+    n_y <- dim(y)[1]
+
+    stopifnot(dim(x)[2] == dim(y)[2])
+    stopifnot(dim(sigma)[1] == dim(sigma)[2])
+    stopifnot(dim(sigma)[1] == dim(x)[2])
+
+    Sinv <- solve(sigma)
     kernsum <- function(...){
-      kernelMatrix_threshold_sum(
-        sigma = sigma,
-        threshold = threshold,
-        approx_exp = approx_exp,
+      kernelMatrix_sum_multi(
+        Sinv = Sinv,
         ...
       )
     }
   }
-
-  n_x <- length(x)
-  n_y <- length(y)
 
   if(bias){
     denom_y = n_y^2

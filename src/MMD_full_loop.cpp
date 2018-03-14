@@ -1,17 +1,11 @@
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-//#include <Rcpp.h>
-using namespace std;
-using namespace Rcpp;
-using namespace arma;
-
-
 inline
   double expApprox(double x) {
     int n = 10;
 
-    x = 1 + x / pow(2, n);
+    x = 1 + x / std::pow(2, n);
     for(int i = 0; i < n; ++i){
       x = x * x;
     }
@@ -22,6 +16,46 @@ inline
   double ident(double x) {
     return -2 * x;
   }
+
+
+
+// [[Rcpp::export]]
+double maha(arma::mat x, arma::mat y, arma::mat Sinv) {
+  arma::mat out_mat = (x - y) * Sinv * (x.t() - y.t());
+  double out = arma::accu(out_mat);
+  return(out);
+
+}
+
+// [[Rcpp::export]]
+double kernelMatrix_sum_multi(const arma::mat x, const arma::mat y, const arma::mat Sinv) {
+
+  int n_x = x.n_rows;
+  int n_y = y.n_rows;
+
+  double b;
+
+  double output_2 = 0;
+  //
+  for(int i = 0; i < n_x; ++i){
+    for(int j = 0; j < n_y; ++j){
+      b = maha(y.row(j), x.row(i), Sinv);
+      output_2 += std::exp(- 0.5 * b);
+
+      if(j % 2048 == 0)
+      {
+        Rcpp::checkUserInterrupt();
+      }
+    }
+    if(i % 2048 == 0)
+    {
+      Rcpp::checkUserInterrupt();
+    }
+  }
+
+  return(output_2);
+}
+
 
 // [[Rcpp::export]]
 double kernelMatrix_sum(const arma::vec& x, const arma::vec& y, const float sigma, int approx_exp) {

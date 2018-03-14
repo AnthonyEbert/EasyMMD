@@ -6,6 +6,32 @@
 
 using namespace Rcpp;
 
+// maha
+double maha(arma::mat x, arma::mat y, arma::mat Sinv);
+RcppExport SEXP _EasyMMD_maha(SEXP xSEXP, SEXP ySEXP, SEXP SinvSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type y(ySEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Sinv(SinvSEXP);
+    rcpp_result_gen = Rcpp::wrap(maha(x, y, Sinv));
+    return rcpp_result_gen;
+END_RCPP
+}
+// kernelMatrix_sum_multi
+double kernelMatrix_sum_multi(const arma::mat x, const arma::mat y, const arma::mat Sinv);
+RcppExport SEXP _EasyMMD_kernelMatrix_sum_multi(SEXP xSEXP, SEXP ySEXP, SEXP SinvSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::mat >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const arma::mat >::type Sinv(SinvSEXP);
+    rcpp_result_gen = Rcpp::wrap(kernelMatrix_sum_multi(x, y, Sinv));
+    return rcpp_result_gen;
+END_RCPP
+}
 // kernelMatrix_sum
 double kernelMatrix_sum(const arma::vec& x, const arma::vec& y, const float sigma, int approx_exp);
 RcppExport SEXP _EasyMMD_kernelMatrix_sum(SEXP xSEXP, SEXP ySEXP, SEXP sigmaSEXP, SEXP approx_expSEXP) {
@@ -37,6 +63,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_EasyMMD_maha", (DL_FUNC) &_EasyMMD_maha, 3},
+    {"_EasyMMD_kernelMatrix_sum_multi", (DL_FUNC) &_EasyMMD_kernelMatrix_sum_multi, 3},
     {"_EasyMMD_kernelMatrix_sum", (DL_FUNC) &_EasyMMD_kernelMatrix_sum, 4},
     {"_EasyMMD_kernelMatrix_threshold_sum", (DL_FUNC) &_EasyMMD_kernelMatrix_threshold_sum, 5},
     {NULL, NULL, 0}
