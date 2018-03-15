@@ -106,7 +106,7 @@ kernelMatrix_sum_wrap <- function(y, x, var = 1, threshold = Inf, approx_exp = 0
 #' @param approx_exp integer; if 0 the usual function for the exponential distribution is used; if 1 a much faster but less accurate version of the exponential distribution is used.
 #' @export
 kmmd <- function(y, var = 1, threshold = Inf, approx_exp = 0){
-  return(kernelMatrix_sum_wrap(y, x, var = var, threshold = Inf, approx_exp = 0))
+  return(kernelMatrix_sum_wrap(y, y, var = var, threshold = Inf, approx_exp = 0))
 }
 
 
