@@ -21,6 +21,8 @@ MMD(y, x, y_kmmd = NULL, var = 1, bias = FALSE, threshold = Inf,
 \item{threshold}{numeric filter out values for exponentiation.}
 
 \item{approx_exp}{integer; if 0 the usual function for the exponential distribution is used; if 1 a much faster but less accurate version of the exponential distribution is used.}
+
+\item{sigma}{numeric DEPRECATED square root of variance.}
 }
 \description{
 This function returns the estimator for the two-sample MMD.

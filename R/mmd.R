@@ -10,6 +10,7 @@
 #' @param bias logical; if \code{TRUE} the biased MMD is computed rather than the unbiased MMD. This can be useful since the biased MMD is always positive.
 #' @param threshold numeric filter out values for exponentiation.
 #' @param approx_exp integer; if 0 the usual function for the exponential distribution is used; if 1 a much faster but less accurate version of the exponential distribution is used.
+#' @param sigma numeric DEPRECATED square root of variance.
 #' @export
 #' @description This function returns the estimator for the two-sample MMD.
 #' @references Gretton, Arthur, et al. "A kernel method for the two-sample-problem." Advances in neural information processing systems. 2007.
