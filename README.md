@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/AnthonyEbert/EasyMMD.svg?branch=master)](https://travis-ci.org/AnthonyEbert/EasyMMD) [![codecov](https://codecov.io/gh/AnthonyEbert/queuecomputer/branch/master/graph/badge.svg)](https://codecov.io/gh/AnthonyEbert/queuecomputer)
+[![Build Status](https://travis-ci.org/AnthonyEbert/EasyMMD.svg?branch=master)](https://travis-ci.org/AnthonyEbert/EasyMMD) [![codecov](https://codecov.io/gh/AnthonyEbert/EasyMMD/branch/master/graph/badge.svg)](https://codecov.io/gh/AnthonyEbert/EasyMMD)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 EasyMMD
@@ -32,7 +32,7 @@ y <- rnorm(n, 5)
 MMD(y,x)
 ```
 
-    ## [1] 1.139035
+    ## [1] 1.13224
 
 ``` r
 # For faster computation, precompute part of the MMD for the observed data y
@@ -42,7 +42,7 @@ y_kmmd <- kmmd(y)
 MMD(y,x, y_kmmd)
 ```
 
-    ## [1] 1.139035
+    ## [1] 1.13224
 
 ``` r
 microbenchmark::microbenchmark(MMD(y,x), MMD(y,x, y_kmmd), times = 10)
@@ -50,8 +50,8 @@ microbenchmark::microbenchmark(MMD(y,x), MMD(y,x, y_kmmd), times = 10)
 
     ## Unit: milliseconds
     ##               expr      min       lq     mean   median       uq      max
-    ##          MMD(y, x) 50.37642 50.63704 51.08804 50.85923 51.11588 52.66734
-    ##  MMD(y, x, y_kmmd) 33.73091 33.77430 34.43660 33.98259 34.32549 37.97717
+    ##          MMD(y, x) 50.76673 51.54796 52.34023 52.02015 52.48663 56.36530
+    ##  MMD(y, x, y_kmmd) 34.03786 34.39718 34.76865 34.63879 35.00489 36.29393
     ##  neval cld
     ##     10   b
     ##     10  a
