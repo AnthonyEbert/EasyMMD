@@ -34,7 +34,9 @@
 #' # Different var
 #'
 #' MMD_4 <- MMD(y, x, var = 0.25)
-MMD <- function(y, x, y_kmmd = NULL, var = 1, bias = FALSE, threshold = Inf, approx_exp = 0){
+MMD <- function(y, x, y_kmmd = NULL, var = 1, bias = FALSE, threshold = Inf, approx_exp = 0, sigma = NULL){
+
+  if(!is.null(sigma)){var = sigma^2}
 
   stopifnot(class(x) == class(y))
 
@@ -94,7 +96,7 @@ kernelMatrix_sum_wrap <- function(y, x, var = 1, threshold = Inf, approx_exp = 0
 
     Sinv <- solve(var)
 
-    return(kernelMatrix_sum_multi(y, x, Sinv = Sinv))
+    return(kernelMatrix_sum_multi(y, x, Sinv = Sinv, threshold = threshold))
   }
 }
 

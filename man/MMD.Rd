@@ -5,7 +5,7 @@
 \title{Compute the MMD between two samples}
 \usage{
 MMD(y, x, y_kmmd = NULL, var = 1, bias = FALSE, threshold = Inf,
-  approx_exp = 0)
+  approx_exp = 0, sigma = NULL)
 }
 \arguments{
 \item{y}{either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.}

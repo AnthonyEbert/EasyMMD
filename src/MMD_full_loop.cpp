@@ -27,19 +27,22 @@ inline
   }
 
 // [[Rcpp::export]]
-double kernelMatrix_sum_multi(const arma::mat& x, const arma::mat& y, const arma::mat Sinv) {
+double kernelMatrix_sum_multi(const arma::mat& x, const arma::mat& y, const arma::mat Sinv, const double threshold) {
 
   int n_x = x.n_rows;
   int n_y = y.n_rows;
 
   double b;
+  double c = threshold * threshold;
 
   double output_2 = 0;
   //
   for(int i = 0; i < n_x; ++i){
     for(int j = 0; j < n_y; ++j){
       b = maha(y.row(j), x.row(i), Sinv);
-      output_2 += std::exp(- 0.5 * b);
+      if(b < c){
+        output_2 += std::exp(- 0.5 * b);
+      }
 
       if(j % 2048 == 0)
       {
