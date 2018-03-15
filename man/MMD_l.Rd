@@ -4,26 +4,26 @@
 \alias{MMD_l}
 \title{Compute the MMD between two samples in linear time}
 \usage{
-MMD_l(x_obs, x_sim, sigma = 1, permute = FALSE)
+MMD_l(y, x, var = 1, permute = FALSE)
 }
 \arguments{
-\item{x_obs}{Numeric Vector}
+\item{y}{numeric vector, method for matrix input not yet implemented which means observations must be 1D.}
 
-\item{x_sim}{Numeric Vector}
+\item{x}{numeric vector, method for matrix input not yet implemented which means observations must be 1D.}
 
-\item{sigma}{Numeric Kernel size}
+\item{var}{numeric kernel variance.}
 
-\item{permute}{Logical Should \code{x_obs} and \code{x_sim} be permuted before MMD_l computation?}
+\item{permute}{logical Should \code{y} and \code{x} be permuted before MMD_l computation?}
 }
 \description{
 Compute the MMD between two samples in linear time
 }
 \examples{
-x_obs <- rnorm(2000)
-x_sim <- rnorm(2000, 5)
+y <- rnorm(2000)
+x <- rnorm(2000, 5)
 
-MMD_full <- MMD(x_obs, x_sim)
-MMD_linear <- MMD_l(x_obs, x_sim)
+MMD_full <- MMD(y, x)
+MMD_linear <- MMD_l(y, x)
 
 MMD_full
 MMD_linear

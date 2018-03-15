@@ -3,10 +3,10 @@
 #'
 #' @useDynLib EasyMMD
 #' @importFrom Rcpp sourceCpp
-#' @param y numeric vector.
-#' @param x numeric vector.
+#' @param y either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.
+#' @param x either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.
 #' @param y_kmmd precomputed first term in MMD calculation.
-#' @param sigma numeric kernel standard deviation.
+#' @param var matrix kernel variance covariance matrix.
 #' @param bias logical; if \code{TRUE} the biased MMD is computed rather than the unbiased MMD. This can be useful since the biased MMD is always positive.
 #' @param threshold numeric filter out values for exponentiation.
 #' @param approx_exp integer; if 0 the usual function for the exponential distribution is used; if 1 a much faster but less accurate version of the exponential distribution is used.
@@ -31,12 +31,17 @@
 #' system.time(MMD_1 <- MMD(y, x))
 #' system.time(MMD_2 <- MMD(y, x, y_kmmd))
 #'
-#' # Different sigma
+#' # Different var
 #'
-#' MMD_4 <- MMD(y, x, sigma = 0.5)
-MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, approx_exp = 0){
+#' MMD_4 <- MMD(y, x, var = 0.25)
+MMD <- function(y, x, y_kmmd = NULL, var = 1, bias = FALSE, threshold = Inf, approx_exp = 0){
 
   stopifnot(class(x) == class(y))
+
+  kernsum <- function(y, x){
+
+    return(kernelMatrix_sum_wrap(y, x, var = var, threshold = threshold, approx_exp = approx_exp))
+  }
 
   if(!is.matrix(x)){
     n_x <- length(x)
@@ -71,13 +76,15 @@ MMD <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, a
   return(output)
 }
 
-kernsum <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, approx_exp = 0){
+kernelMatrix_sum_wrap <- function(y, x, var = 1, threshold = Inf, approx_exp = 0){
 
   if(!is.matrix(x)){
+    sigma = sqrt(var)
+
     if(is.infinite(threshold)){
         return(kernelMatrix_sum(y, x, sigma = sigma, approx_exp = approx_exp))
     } else {
-        return(kernelMatrix_threshold_sum(y, x, sigma = sigma, approx_exp = approx_exp))
+        return(kernelMatrix_threshold_sum(y, x, sigma = sigma, threshold = threshold, approx_exp = approx_exp))
     }
   } else {
 
@@ -85,7 +92,7 @@ kernsum <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = In
     stopifnot(dim(sigma)[1] == dim(sigma)[2])
     stopifnot(dim(sigma)[1] == dim(x)[2])
 
-    Sinv <- solve(sigma)
+    Sinv <- solve(var)
 
     return(kernelMatrix_sum_multi(y, x, Sinv = Sinv))
   }
@@ -93,32 +100,13 @@ kernsum <- function(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = In
 
 
 #' Compute the kmmd for one sample \code{y}
-#' @param y numeric Vector
-#' @param sigma numeric kernel standard deviation
+#' @param y either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.
+#' @param var matrix kernel variance covariance matrix.
 #' @param threshold numeric filter out values for exponentiation.
+#' @param approx_exp integer; if 0 the usual function for the exponential distribution is used; if 1 a much faster but less accurate version of the exponential distribution is used.
 #' @export
-kmmd <- function(y, sigma = 1, threshold = Inf){
-  kernsum(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf, approx_exp = 0)
-
-  if(is.infinite(threshold)){
-    kernsum <- function(...){
-      kernelMatrix_sum(
-        sigma = sigma,
-        approx_exp = 0,
-        ...
-      )
-    }
-  } else {
-    kernsum <- function(...){
-      kernelMatrix_threshold_sum(
-        sigma = sigma,
-        threshold = threshold,
-        approx_exp = 0,
-        ...
-      )
-    }
-  }
-  return(kernsum(y, y))
+kmmd <- function(y, var = 1, threshold = Inf, approx_exp = 0){
+  return(kernelMatrix_sum_wrap(y, x, var = var, threshold = Inf, approx_exp = 0))
 }
 
 

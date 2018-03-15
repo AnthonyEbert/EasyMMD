@@ -4,17 +4,17 @@
 \alias{MMD}
 \title{Compute the MMD between two samples}
 \usage{
-MMD(y, x, y_kmmd = NULL, sigma = 1, bias = FALSE, threshold = Inf,
+MMD(y, x, y_kmmd = NULL, var = 1, bias = FALSE, threshold = Inf,
   approx_exp = 0)
 }
 \arguments{
-\item{y}{numeric vector.}
+\item{y}{either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.}
 
-\item{x}{numeric vector.}
+\item{x}{either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.}
 
 \item{y_kmmd}{precomputed first term in MMD calculation.}
 
-\item{sigma}{numeric kernel standard deviation.}
+\item{var}{matrix kernel variance covariance matrix.}
 
 \item{bias}{logical; if \code{TRUE} the biased MMD is computed rather than the unbiased MMD. This can be useful since the biased MMD is always positive.}
 
@@ -43,9 +43,9 @@ MMD_2
 system.time(MMD_1 <- MMD(y, x))
 system.time(MMD_2 <- MMD(y, x, y_kmmd))
 
-# Different sigma
+# Different var
 
-MMD_4 <- MMD(y, x, sigma = 0.5)
+MMD_4 <- MMD(y, x, var = 0.25)
 }
 \references{
 Gretton, Arthur, et al. "A kernel method for the two-sample-problem." Advances in neural information processing systems. 2007.

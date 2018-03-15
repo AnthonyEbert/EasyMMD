@@ -4,7 +4,7 @@
 \alias{MMD_l_multi}
 \title{Compute the permuted Jack-knife MMD_linear}
 \usage{
-MMD_l_multi(x_obs, x_sim, k, sigma = 1, agg = TRUE)
+MMD_l_multi(x_obs, x_sim, k, var = 1, agg = TRUE)
 }
 \arguments{
 \item{x_obs}{Numeric Vector}
@@ -13,7 +13,7 @@ MMD_l_multi(x_obs, x_sim, k, sigma = 1, agg = TRUE)
 
 \item{k}{Integer Number of permutations}
 
-\item{sigma}{Numeric Kernel size}
+\item{var}{Numeric Kernel size}
 
 \item{agg}{Logical Should output be aggregated by mean?}
 }
