@@ -9,6 +9,8 @@ kmmd(y, w_y = NULL, var = 1, threshold = Inf, approx_exp = 0)
 \arguments{
 \item{y}{either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.}
 
+\item{w_y}{numeric weights for y.}
+
 \item{var}{matrix kernel variance covariance matrix.}
 
 \item{threshold}{numeric filter out values for exponentiation.}

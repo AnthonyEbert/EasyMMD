@@ -37,11 +37,18 @@ y <- mvtnorm::rmvnorm(100, mean = c(0,1))
 x <- x[sample(100, 200, replace = TRUE),]
 y <- y[sample(100, 200, replace = TRUE),]
 
-x_df <- data.frame(x1 = x[,1], x2 = x[,2]) %>% group_by(x1,x2) %>% summarise(count = n())
-y_df <- data.frame(y1 = y[,1], y2 = y[,2]) %>% group_by(y1,y2) %>% summarise(count = n())
+x_df <- aggregate(data.frame(count = x[,1]), list(x1 = x[,1], x2 = x[,2]), length)
+y_df <- aggregate(data.frame(count = y[,1]), list(y1 = y[,1], y2 = y[,2]), length)
 
 mmd_9 <- MMD(y, x, var = diag(2))
 mmd_10 <- MMD(cbind(y_df$y1, y_df$y2), cbind(x_df$x1, x_df$x2), w_y = y_df$count, w_x = x_df$count, var = diag(2))
+
+x <- c(1,3,5)
+y <- c(2,4,6)
+y_kmmd <- kmmd(y)
+
+mmd_11 <- MMD(y,x)
+mmd_12 <- MMD(y,x, y_kmmd = y_kmmd)
 
 testthat::expect_equal(mmd_0, mmd_1)
 testthat::expect_equal(mmd_1, 0.86041675469766)
@@ -53,3 +60,5 @@ testthat::expect_equal(mmd_6, 0.87339614038578)
 testthat::expect_equal(mmd_7, 0.85633509397044)
 testthat::expect_equal(mmd_8, mmd_1)
 testthat::expect_equal(mmd_9, mmd_10)
+testthat::expect_equal(mmd_11, -0.5006591)
+testthat::expect_equal(mmd_12, -0.5006591)

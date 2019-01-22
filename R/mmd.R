@@ -116,11 +116,23 @@ kernelMatrix_sum_wrap <- function(y, x, w_y, w_x, var = 1, threshold = Inf, appr
 
 #' Compute the kmmd for one sample \code{y}
 #' @param y either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.
+#' @param w_y numeric weights for y.
 #' @param var matrix kernel variance covariance matrix.
 #' @param threshold numeric filter out values for exponentiation.
 #' @param approx_exp integer; if 0 the usual function for the exponential distribution is used; if 1 a much faster but less accurate version of the exponential distribution is used.
 #' @export
 kmmd <- function(y, w_y = NULL, var = 1, threshold = Inf, approx_exp = 0){
+
+  if(!is.matrix(y)){
+    if(is.null(w_y)){w_y = rep(1, length(y))}
+
+    stopifnot(length(w_y) == length(y))
+  } else {
+    if(is.null(w_y)){w_y = rep(1, dim(y)[1])}
+
+    stopifnot(length(w_y) == dim(y)[1])
+  }
+
   return(kernelMatrix_sum_wrap(y, y, w_y, w_y, var = var, threshold = threshold, approx_exp = approx_exp))
 }
 
