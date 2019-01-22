@@ -27,7 +27,7 @@ inline
   }
 
 // [[Rcpp::export]]
-double kernelMatrix_sum_multi(const arma::mat& x, const arma::mat& y, const arma::mat Sinv, const double threshold) {
+double kernelMatrix_sum_multi(const arma::mat& x, const arma::mat& y, const arma::vec& w_x, const arma::vec& w_y, const arma::mat Sinv, const double threshold) {
 
   int n_x = x.n_rows;
   int n_y = y.n_rows;
@@ -41,7 +41,7 @@ double kernelMatrix_sum_multi(const arma::mat& x, const arma::mat& y, const arma
     for(int j = 0; j < n_y; ++j){
       b = maha(y.row(j), x.row(i), Sinv);
       if(b < c){
-        output_2 += std::exp(- 0.5 * b);
+        output_2 += w_x[i] * w_y[j] * std::exp(- 0.5 * b);
       }
 
       if(j % 2048 == 0)
@@ -60,7 +60,7 @@ double kernelMatrix_sum_multi(const arma::mat& x, const arma::mat& y, const arma
 
 
 // [[Rcpp::export]]
-double kernelMatrix_sum(const arma::vec& x, const arma::vec& y, const float sigma, int approx_exp) {
+double kernelMatrix_sum(const arma::vec& x, const arma::vec& y, const arma::vec& w_x, const arma::vec& w_y, const float sigma, int approx_exp) {
 
   int n_x = x.size();
   int n_y = y.size();
@@ -82,7 +82,7 @@ double kernelMatrix_sum(const arma::vec& x, const arma::vec& y, const float sigm
   for(int i = 0; i < n_x; ++i){
     for(int j = 0; j < n_y; ++j){
       b = (y[j] - x[i])/sigma;
-      output_2 += exp_f(- 0.5 * b * b);
+      output_2 += w_x[i] * w_y[j] * exp_f(- 0.5 * b * b);
 
       if(j % 2048 == 0)
       {
@@ -99,7 +99,7 @@ double kernelMatrix_sum(const arma::vec& x, const arma::vec& y, const float sigm
 }
 
 // [[Rcpp::export]]
-double kernelMatrix_threshold_sum(const arma::vec& x_u, const arma::vec& y_u, const float sigma, const float threshold, int approx_exp) {
+double kernelMatrix_threshold_sum(const arma::vec& x_u, const arma::vec& y_u, const arma::vec& w_x, const arma::vec& w_y, const float sigma, const float threshold, int approx_exp) {
 
   const arma::vec y = sort(y_u);
   const arma::vec x = sort(x_u);
@@ -137,7 +137,7 @@ double kernelMatrix_threshold_sum(const arma::vec& x_u, const arma::vec& y_u, co
         }
       } else {
         //a = b * b;
-        output_2 += exp_f(- 0.5 * b * b);
+        output_2 += w_x[i] * w_y[j] * exp_f(- 0.5 * b * b);
 
         // if(approx_exp){
         //   output_2 += exp512(- b * b);

@@ -5,7 +5,7 @@
 \title{Compute the MMD between two samples}
 \usage{
 MMD(y, x, y_kmmd = NULL, var = 1, bias = FALSE, threshold = Inf,
-  approx_exp = 0, sigma = NULL)
+  approx_exp = 0, sigma = NULL, w_y = NULL, w_x = NULL)
 }
 \arguments{
 \item{y}{either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.}
@@ -23,6 +23,10 @@ MMD(y, x, y_kmmd = NULL, var = 1, bias = FALSE, threshold = Inf,
 \item{approx_exp}{integer; if 0 the usual function for the exponential distribution is used; if 1 a much faster but less accurate version of the exponential distribution is used.}
 
 \item{sigma}{numeric DEPRECATED square root of variance.}
+
+\item{w_y}{numeric weights for y}
+
+\item{w_x}{numeric weights for x}
 }
 \description{
 This function returns the estimator for the two-sample MMD.

@@ -4,7 +4,7 @@
 \alias{kmmd}
 \title{Compute the kmmd for one sample \code{y}}
 \usage{
-kmmd(y, var = 1, threshold = Inf, approx_exp = 0)
+kmmd(y, w_y = NULL, var = 1, threshold = Inf, approx_exp = 0)
 }
 \arguments{
 \item{y}{either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.}
