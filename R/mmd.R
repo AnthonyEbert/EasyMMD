@@ -1,7 +1,7 @@
 
 #' Compute the MMD between two samples
 #'
-#' @useDynLib EasyMMD
+#' @useDynLib EasyMMD, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @param y either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.
 #' @param x either a numeric vector or matrix with number of rows equal to number of observations and number of columns equal to dimension of observations.

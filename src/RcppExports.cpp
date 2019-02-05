@@ -55,15 +55,3 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-
-static const R_CallMethodDef CallEntries[] = {
-    {"_EasyMMD_kernelMatrix_sum_multi", (DL_FUNC) &_EasyMMD_kernelMatrix_sum_multi, 6},
-    {"_EasyMMD_kernelMatrix_sum", (DL_FUNC) &_EasyMMD_kernelMatrix_sum, 6},
-    {"_EasyMMD_kernelMatrix_threshold_sum", (DL_FUNC) &_EasyMMD_kernelMatrix_threshold_sum, 7},
-    {NULL, NULL, 0}
-};
-
-RcppExport void R_init_EasyMMD(DllInfo *dll) {
-    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
-    R_useDynamicSymbols(dll, FALSE);
-}
