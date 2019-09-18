@@ -37,6 +37,16 @@
 #' # Different var
 #'
 #' MMD_4 <- MMD(y, x, var = 0.25)
+#'
+#' # Matrix version
+#' library(mvtnorm)
+#'
+#' x <- rmvnorm(100, c(0,0), diag(c(2,2)))
+#' sigma <- matrix(c(2,1.5,1.5,2), ncol=2)
+#' y <- rmvnorm(100, c(0,0), sigma = sigma)
+#'
+#' MMD(y, x, var = diag(c(0.5, 0.5)), bias = TRUE)
+#'
 MMD <- function(y, x, y_kmmd = NULL, var = 1, bias = FALSE, threshold = Inf, approx_exp = 0, sigma = NULL, w_y = NULL, w_x = NULL){
 
   if(!is.matrix(x)){

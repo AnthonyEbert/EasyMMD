@@ -52,6 +52,16 @@ system.time(MMD_2 <- MMD(y, x, y_kmmd))
 # Different var
 
 MMD_4 <- MMD(y, x, var = 0.25)
+
+# Matrix version
+library(mvtnorm)
+
+x <- rmvnorm(100, c(0,0), diag(c(2,2)))
+sigma <- matrix(c(2,1.5,1.5,2), ncol=2)
+y <- rmvnorm(100, c(0,0), sigma = sigma)
+
+MMD(y, x, var = diag(c(0.5, 0.5)), bias = TRUE)
+
 }
 \references{
 Gretton, Arthur, et al. "A kernel method for the two-sample-problem." Advances in neural information processing systems. 2007.
