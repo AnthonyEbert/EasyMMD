@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // kernelMatrix_sum_multi
 double kernelMatrix_sum_multi(const arma::mat& x, const arma::mat& y, const arma::vec& w_x, const arma::vec& w_y, const arma::mat Sinv, const double threshold);
 RcppExport SEXP _EasyMMD_kernelMatrix_sum_multi(SEXP xSEXP, SEXP ySEXP, SEXP w_xSEXP, SEXP w_ySEXP, SEXP SinvSEXP, SEXP thresholdSEXP) {
